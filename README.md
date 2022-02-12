@@ -27,3 +27,13 @@ Consider that this service must work in a microservices environment in high avai
 You can spend as much time as you need but we think that 4 hours is enough to show [the requirements of this job.](OFFER.md)
 You don't have to document your code, but you can write down anything you want to explain or anything you have skipped.
 You don't need to write tests for everything, but we would like to see different types of tests.
+
+
+----------------------
+# Endpoints
+
+## Swagger
+ - http://localhost:8090/swagger-ui/#/wallet-controller
+
+## App Health-Check
+ - http://localhost:8090/actuator/health
