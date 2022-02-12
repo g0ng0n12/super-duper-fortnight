@@ -27,5 +27,11 @@ public class Wallet {
             cascade = CascadeType.ALL)
     private Set<Transaction> transactions;
 
+    public void addingBalance(BigDecimal balanceToAdd){
+        this.balance = this.balance.add(balanceToAdd);
+    }
 
+    public void subtractingBalance(BigDecimal balanceToSub){
+        this.balance = this.balance.subtract(balanceToSub);
+    }
 }

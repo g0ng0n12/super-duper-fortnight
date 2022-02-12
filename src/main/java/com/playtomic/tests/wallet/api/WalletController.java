@@ -1,5 +1,6 @@
 package com.playtomic.tests.wallet.api;
 
+import com.playtomic.tests.wallet.api.requests.WalletTopUpHttpRequest;
 import com.playtomic.tests.wallet.api.responses.WalletHttpResponse;
 import com.playtomic.tests.wallet.service.WalletService;
 import io.swagger.annotations.ApiOperation;
@@ -31,4 +32,20 @@ public class WalletController {
         log.debug("Getting Wallet By Id");
         return walletService.getWalletById(id);
     }
+
+    @RequestMapping(path= "{id}/topup", method = RequestMethod.PATCH, produces = "application/json")
+    @ApiOperation("Adding money to your wallet using CreditCard")
+    @ResponseStatus(HttpStatus.OK)
+    public WalletHttpResponse topUpWalletWithCreditCard(@ApiParam("Wallet Id") @PathVariable("id") long id, @RequestBody WalletTopUpHttpRequest request) {
+        log.debug("Top up the Wallet By Id");
+        topUpRequestValidation(request);
+        return walletService.topUpWallet(id, request);
+    }
+
+    private void topUpRequestValidation(WalletTopUpHttpRequest request){
+        if (request.getAmount().intValue() < 15){
+            throw new IllegalArgumentException();
+        }
+    }
+
 }

@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.math.BigDecimal;
 
 @Data
 @NoArgsConstructor
@@ -17,9 +18,14 @@ public class Transaction {
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
 
-    private Long amount;
+    private BigDecimal amount;
+
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "wallet_id", nullable = false)
     private Wallet wallet;
+
+    public Transaction(BigDecimal amount) {
+        this.amount = amount;
+    }
 }

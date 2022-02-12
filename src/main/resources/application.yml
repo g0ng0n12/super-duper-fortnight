@@ -3,23 +3,27 @@ server:
   port: 8090
 ---
 spring:
-  profiles: develop
   jpa:
-    show_sql: false
+    show_sql: true
     database: H2
   datasource:
     url: jdbc:h2:mem:testdb;DB_CLOSE_ON_EXIT=FALSE;IGNORECASE=TRUE
     initialize: false
+  config:
+    activate:
+      on-profile: develop
 stripe.simulator.charges-uri: https://sandbox.playtomic.io/v1/stripe-simulator/charges
-stripe.simulator.refunds-uri: https://sandbox.playtomic.io/v1/stripe-simulator/payments/{payment_id}/refunds
+stripe.simulator.refunds-uri: https://sandbox.playtomic.io/v1/stripe-simulator/payments
 ---
 spring:
-  profiles: test
   jpa:
     show_sql: false
     database: H2
   datasource:
     url: jdbc:h2:mem:testdb;DB_CLOSE_ON_EXIT=FALSE;IGNORECASE=TRUE
     initialize: false
+  config:
+    activate:
+      on-profile: test
 stripe.simulator.charges-uri: http://localhost:9999
 stripe.simulator.refunds-uri: http://localhost:9999

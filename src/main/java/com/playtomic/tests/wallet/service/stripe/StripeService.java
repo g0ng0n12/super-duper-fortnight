@@ -1,12 +1,17 @@
 package com.playtomic.tests.wallet.service.stripe;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.playtomic.tests.wallet.model.StripeTransaction;
+import com.playtomic.tests.wallet.service.impl.WalletServiceImpl;
 import com.sun.istack.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NonNull;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.client.RestTemplateBuilder;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
@@ -24,6 +29,8 @@ import java.net.URI;
 @Data
 public class StripeService {
 
+    private Logger log = LoggerFactory.getLogger(StripeService.class);
+
     @NonNull
     private URI chargesUri;
 
@@ -33,8 +40,8 @@ public class StripeService {
     @NonNull
     private RestTemplate restTemplate;
 
-    public StripeService(@Value("stripe.simulator.charges-uri") @NonNull URI chargesUri,
-                         @Value("stripe.simulator.refunds-uri") @NonNull URI refundsUri,
+    public StripeService(@Value("${stripe.simulator.charges-uri}") @NonNull URI chargesUri,
+                         @Value("${stripe.simulator.refunds-uri}") @NonNull URI refundsUri,
                          @NotNull RestTemplateBuilder restTemplateBuilder) {
         this.chargesUri = chargesUri;
         this.refundsUri = refundsUri;
@@ -53,19 +60,26 @@ public class StripeService {
      * @param amount The amount that will be charged.
      *
      * @throws StripeServiceException
+     * @return
      */
-    public void charge(@NonNull String creditCardNumber, @NonNull BigDecimal amount) throws StripeServiceException {
+    public StripeTransaction charge(@NonNull String creditCardNumber, @NonNull BigDecimal amount) throws StripeServiceException {
         ChargeRequest body = new ChargeRequest(creditCardNumber, amount);
         // Object.class because we don't read the body here.
-        restTemplate.postForObject(chargesUri, body, Object.class);
+        // Gon: Adding a way to get the response in order to get the paymentId if we need to refund the topUp using the stripe refund call
+        return restTemplate.postForObject(chargesUri, body, StripeTransaction.class);
     }
 
     /**
      * Refunds the specified payment.
      */
     public void refund(@NonNull String paymentId) throws StripeServiceException {
+
+        // Gon: I had to recreate the refund url because the paymentId param was not being decode
+        String urlRefundString = refundsUri.toString() + "/{paymentId}/refunds";
         // Object.class because we don't read the body here.
-        restTemplate.postForEntity(chargesUri.toString(), null, Object.class, paymentId);
+        // Gon: Adding a way to get the response in order to see if the response is 200
+        ResponseEntity<String> response  = restTemplate.postForEntity(urlRefundString, null, String.class, paymentId);
+        log.info(response.toString());
     }
 
     @AllArgsConstructor
