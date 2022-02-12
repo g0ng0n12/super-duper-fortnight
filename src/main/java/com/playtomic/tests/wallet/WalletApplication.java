@@ -16,14 +16,4 @@ public class WalletApplication {
 		SpringApplication.run(WalletApplication.class, args);
 	}
 
-	@Bean
-	public CommandLineRunner addingDemoData(WalletRepository walletRepository) {
-		return args -> {
-			Wallet wallet = new Wallet();
-			wallet.setBalance(new BigDecimal(10.0));
-
-			walletRepository.save(wallet);
-		};
-
-	}
 }

@@ -3,6 +3,7 @@ package com.playtomic.tests.wallet.service.stripe;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.sun.istack.NotNull;
 import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.NonNull;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.client.RestTemplateBuilder;
@@ -20,6 +21,7 @@ import java.net.URI;
  * This dummy implementation throws an error when trying to charge less than 10€.
  */
 @Service
+@Data
 public class StripeService {
 
     @NonNull

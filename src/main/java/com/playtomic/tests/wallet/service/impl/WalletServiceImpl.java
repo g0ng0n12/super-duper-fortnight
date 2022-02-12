@@ -8,6 +8,7 @@ import com.playtomic.tests.wallet.util.WalletMappers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.Optional;
 
 @Service
@@ -25,7 +26,7 @@ public class WalletServiceImpl implements WalletService {
         Optional<Wallet> wallet = walletRepository.findById(id);
 
         if (wallet.isEmpty()) {
-            throw new IllegalArgumentException("Wallet with id:" + id + " was not found.");
+            throw new EntityNotFoundException("Wallet with id:" + id + " was not found.");
         }
 
         return WalletMappers.mapToHttpResponse(wallet.get());
