@@ -7,6 +7,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import com.playtomic.tests.wallet.api.responses.TransactionHttpResponse;
 import com.playtomic.tests.wallet.api.responses.WalletHttpResponse;
 import com.playtomic.tests.wallet.model.Transaction;
 import com.playtomic.tests.wallet.model.Wallet;
@@ -48,7 +49,7 @@ public class WalletControllerTest {
 
     @Test
     public void getWalletById() throws Exception{
-        Mockito.when(walletService.getWalletById(walletId)).thenReturn(new WalletHttpResponse(walletId, BigDecimal.valueOf(1000)));
+        Mockito.when(walletService.getWalletById(walletId)).thenReturn(new WalletHttpResponse(walletId, BigDecimal.valueOf(1000),new HashSet<TransactionHttpResponse>()));
 
         mockMvc.perform(MockMvcRequestBuilders.get("/api/v1/wallets/{id}", 1L))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.id").value(1L))

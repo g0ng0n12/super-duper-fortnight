@@ -1,23 +1,24 @@
 package com.playtomic.tests.wallet.model;
 
 import com.sun.istack.NotNull;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
+
 
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.util.Set;
 
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
 @Table(name = "wallets")
+@EqualsAndHashCode
 public class Wallet {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
     @NotNull
@@ -33,5 +34,10 @@ public class Wallet {
 
     public void subtractingBalance(BigDecimal balanceToSub){
         this.balance = this.balance.subtract(balanceToSub);
+    }
+
+    public void addTransaction(Transaction transaction){
+        transactions.add(transaction);
+        transaction.setWallet(this);
     }
 }

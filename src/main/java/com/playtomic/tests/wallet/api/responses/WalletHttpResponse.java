@@ -1,13 +1,14 @@
 package com.playtomic.tests.wallet.api.responses;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import com.playtomic.tests.wallet.model.Transaction;
+import lombok.*;
 
 import java.math.BigDecimal;
+import java.util.Set;
 
-@Data
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 public class WalletHttpResponse {
@@ -17,5 +18,8 @@ public class WalletHttpResponse {
 
     @JsonProperty("balance")
     private BigDecimal balance;
+
+    @JsonProperty("transactions")
+    private Set<TransactionHttpResponse> transactions;
 
 }
