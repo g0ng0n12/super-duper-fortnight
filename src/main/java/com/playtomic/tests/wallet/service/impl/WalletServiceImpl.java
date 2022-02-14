@@ -18,6 +18,7 @@ import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
 import java.math.BigDecimal;
+import java.util.HashSet;
 import java.util.Optional;
 
 import static com.playtomic.tests.wallet.model.TransactionTypes.valueOf;
@@ -37,6 +38,13 @@ public class WalletServiceImpl implements WalletService {
     @Autowired
     public void setWalletRepository(WalletRepository walletRepository){
         this.walletRepository = walletRepository;
+    }
+
+    @Override
+    public WalletHttpResponse createWallet(){
+        Wallet wallet = new Wallet(new BigDecimal(0L), new HashSet<Transaction>());
+        wallet = walletRepository.save(wallet);
+        return WalletMappers.mapToHttpResponse(wallet);
     }
 
     @Override

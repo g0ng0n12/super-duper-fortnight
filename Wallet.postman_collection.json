@@ -102,6 +102,28 @@
 				}
 			},
 			"response": []
+		},
+		{
+			"name": "Create an Empty Wallet",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:57434/api/v1/wallets/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "57434",
+					"path": [
+						"api",
+						"v1",
+						"wallets",
+						""
+					]
+				}
+			},
+			"response": []
 		}
 	]
 }

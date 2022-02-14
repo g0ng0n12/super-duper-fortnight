@@ -6,6 +6,8 @@ import com.playtomic.tests.wallet.api.responses.WalletHttpResponse;
 
 public interface WalletService {
 
+    WalletHttpResponse createWallet();
+
     WalletHttpResponse getWalletById (long id);
 
     WalletHttpResponse topUpWallet(long id, WalletTopUpHttpRequest walletTopUpHttpRequest);

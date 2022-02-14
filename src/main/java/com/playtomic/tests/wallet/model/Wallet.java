@@ -6,6 +6,7 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
+import java.util.HashSet;
 import java.util.Set;
 
 @Getter
@@ -27,6 +28,11 @@ public class Wallet {
     @OneToMany(mappedBy = "wallet", fetch = FetchType.LAZY,
             cascade = CascadeType.ALL)
     private Set<Transaction> transactions;
+
+    public Wallet(BigDecimal balance, Set<Transaction> transactions){
+        this.balance = balance;
+        this.transactions = transactions;
+    }
 
     public void addingBalance(BigDecimal balanceToAdd){
         this.balance = this.balance.add(balanceToAdd);

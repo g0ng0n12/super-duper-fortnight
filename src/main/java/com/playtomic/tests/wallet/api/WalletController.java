@@ -25,6 +25,13 @@ public class WalletController {
         this.walletService = walletService;
     }
 
+    @RequestMapping(path = "/", method = RequestMethod.POST, produces = "application/json")
+    @ApiOperation("Create a Wallet with Zero Balance")
+    @ResponseStatus(HttpStatus.OK)
+    public WalletHttpResponse createWallet() {
+        log.debug("Creating a new Wallet");
+        return walletService.createWallet();
+    }
 
     @RequestMapping(path = "/{id}", method = RequestMethod.GET, produces = "application/json")
     @ApiOperation("Get Wallet by Id.")

@@ -1,0 +1,46 @@
+version: '3.8'
+
+services:
+  # Database Service (Mysql)
+  db:
+    image: mysql:5.7
+    restart: unless-stopped
+    env_file: ./.env
+    ports:
+      - "3306:3306"
+    expose:
+      # Opens port 3306 on the container
+      - 3306
+    environment:
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+    volumes:
+      - "db:/var/lib/mysql"
+
+  api:
+    depends_on:
+      - db
+    restart: on-failure
+    env_file: ./.env
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    volumes:
+      - /usr/src/app/target/
+    ports:
+      - "8090:8090"
+    environment:
+      SPRING_DATASOURCE_URL: ${SPRING_DATASOURCE_URL}
+      SPRING_DATASOURCE_USERNAME: ${MYSQL_USER}
+      SPRING_DATASOURCE_PASSWORD: ${MYSQL_PASSWORD}
+      SPRING_PROFILE_ACTIVE: ${SPRING_PROFILE_ACTIVE}
+      SPRING_PROFILES_HTTP_PORT: ${HTTP_PORT}
+      SPRING_PROFILES_JPA_SHOW_SQL: ${JPA_SHOW_SQL}
+    stdin_open: true
+    tty: true
+
+# Volumes
+volumes:
+  db:

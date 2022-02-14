@@ -1,4 +1,4 @@
-spring.profiles.active: develop
+spring.profiles.active: ${SPRING_PROFILE_ACTIVE}
 server:
   port: 8090
 ---
@@ -31,3 +31,35 @@ spring:
       on-profile: test
 stripe.simulator.charges-uri: http://localhost:9999
 stripe.simulator.refunds-uri: http://localhost:9999
+
+---
+spring:
+  jpa:
+    show_sql: false
+    database: H2
+  datasource:
+    url: jdbc:h2:mem:testdb;DB_CLOSE_ON_EXIT=FALSE;IGNORECASE=TRUE
+    initialize: false
+  config:
+    activate:
+      on-profile: integration-test
+stripe.simulator.charges-uri: https://sandbox.playtomic.io/v1/stripe-simulator/charges
+stripe.simulator.refunds-uri: https://sandbox.playtomic.io/v1/stripe-simulator/payments
+
+---
+spring:
+  jpa:
+    hibernate.ddl-auto: create-drop
+    generate-ddl: true
+    show-sql: true
+  datasource:
+    platform: "org.hibernate.dialect.MySQLDialect"
+    driverClassName: com.mysql.cj.jdbc.Driver
+    url: ${SPRING_DATASOURCE_URL}
+    username: ${SPRING_DATASOURCE_USERNAME}
+    password: ${SPRING_DATASOURCE_PASSWORD}
+  config:
+    activate:
+      on-profile: release
+stripe.simulator.charges-uri: https://sandbox.playtomic.io/v1/stripe-simulator/charges
+stripe.simulator.refunds-uri: https://sandbox.playtomic.io/v1/stripe-simulator/payments
