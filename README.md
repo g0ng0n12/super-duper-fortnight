@@ -42,6 +42,7 @@ so when you generate one of those functionalities and everything is ok you will 
 Nowadays the refund functionality is against your balance and not validating against an old transaction that is in the wallet
 
 Also I fixed the StripServiceTest by using several mocks and in integration-test happy path that the external endpoint is tested.
+and I created an endpoint to create an empty wallet in order to have a wallet to test the endpoints.
 
 -----------------------
 ## Requirements
@@ -134,6 +135,10 @@ in order to run the integration tests you should run in the command line from th
 ```shell
 mvn integration-test verify  
 ```
+### When integration-test ends you will see this.
+```
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 9.186 s - in com.playtomic.tests.wallet.integration.WalletApplicationIT
+```
 
 ## Running Tests
 In order to run Unit Tests with mocks you should run in the command line from the root path:
@@ -149,6 +154,8 @@ mvn -DSPRING_PROFILE_ACTIVE=test test
 
 * creating a deployment.yml and a service.yml file in order to deploy this in EKS
 
+* Adding an initialisation script to add Data when the app boots up, and try flyway or liquidbase
+
 * Improve the Integration Test:
     - Add error path in the TopUp to test the refund external endpoint
     - Improve the maven process to run the integration tests with maven profile
@@ -158,3 +165,9 @@ mvn -DSPRING_PROFILE_ACTIVE=test test
 
 * Performance:
     - Add a Jmeter file to run load tests
+
+-------------------
+## Common Errors
+
+    1. Initially there are no data, so I added a create wallet endpoint (POST) that creates an empty wallet
+    2. When you run docker-compose up... if you see warnings like this: WARN[0000] The "MYSQL_USER" variable, you should create the .env file
