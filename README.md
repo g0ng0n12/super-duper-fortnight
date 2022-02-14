@@ -35,7 +35,7 @@ You don't need to write tests for everything, but we would like to see different
 
 I decided to create 3 endpoints. 
     - One to get a Wallet by Id that uses a GET HTTP Method.
-    - Another endpoint to add balance to the wallet (topup) using a Patch method because it's only update part of the Resource to all of it.
+    - Another endpoint to add balance to the wallet (topup) using a Patch method because it's only update part of the Resource to all of it. Also if there is any error during the creation or db save of the topup transaction in the wallet the service execute the External call to the Stripe refund endpoint
     - The last endpoint that is the one that you can use to Spend or refund the payments. 
 I modeled The transactions, so the TopUp, Spend and Refund is one type of transaction each, 
 so when you generate one of those functionalities and everything is ok you will save a transaction in your wallet.
